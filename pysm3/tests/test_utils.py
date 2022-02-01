@@ -31,3 +31,13 @@ def test_bandpass_unit_conversion():
     )
     for pol in [0, 1]:
         assert_quantity_allclose(expected_map[pol], CMB_thermo_int[pol], rtol=1e-4)
+
+def test_remotedata(tmp_path):
+    import os
+    data_folder = tmp_path / "data"
+    data_folder.mkdir()
+    test_file = data_folder / "testfile.txt"
+    test_file.touch()
+    os.environ["PYSM_LOCAL_DATA"] = str(data_folder)
+    filename = pysm3.utils.RemoteData().get("testfile.txt")
+    assert filename == str(test_file)
