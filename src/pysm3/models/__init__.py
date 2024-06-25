@@ -17,5 +17,6 @@ from .websky import (
     WebSkyCIB,
     WebSkySZ,
     WebSkyRadioGalaxies,
+    AgoraSZ
 )
 from .catalog import PointSourceCatalog
