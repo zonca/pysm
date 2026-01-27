@@ -3,6 +3,7 @@
 # This sub-module is destined for common non-package specific utility
 # functions.
 
+import logging
 import warnings
 
 import numpy as np
@@ -10,6 +11,21 @@ from numba import njit
 
 from .. import units as u
 from .data import RemoteData  # noqa: F401
+
+log = logging.getLogger("pysm3")
+
+
+def set_verbosity(level=logging.INFO):
+    logger = logging.getLogger("pysm3")
+    logger.setLevel(level)
+    if logger.hasHandlers():
+        logger.handlers.clear()
+    handler = logging.StreamHandler()
+    handler.setFormatter(
+        logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+    )
+    logger.addHandler(handler)
+    logger.propagate = False
 
 
 def has_polarization(m):
@@ -159,7 +175,7 @@ def trapz_step_inplace(freqs, weights, i, m, output):
 
 
 def check_freq_input(freqs):
-    """ Function to check that the input to `Model.get_emission` is a
+    """Function to check that the input to `Model.get_emission` is a
     np.ndarray.
 
     This function will convert input scalar frequencies
